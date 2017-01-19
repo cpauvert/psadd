@@ -3,13 +3,18 @@
 #' Apply statistics function to taxa abundance vector
 #'
 #' It generalize the \code{\link{taxa_sums}} function and enable the use of several summary functions.
+#'
 #' @param physeq \code{\link{otu_table-class}}, or \code{\link{phyloseq-class}}
 #' @param ... The function to be applied to the OTU table
-#' @returns A \code{\link{numeric-class}} with length equal to the number of species
+#' @return A \code{\link{numeric-class}} with length equal to the number of species
 #'  in the table, name indicated the taxa ID, and value equal to the result of
 #'  the function applied through \code{...}.
 #' @seealso \code{\link{taxa_sums}} on which this function is based.
-#' @example
+#'
+#' @import phyloseq
+#'
+#' @export
+#' @examples
 #' data(esophagus)
 #' taxa_stats(esophagus, mean)[1:6]
 #' taxa_stats(esophagus, var)[1:6]
@@ -34,6 +39,7 @@ taxa_stats<-function (physeq,...){
 #' @seealso \code{\link{taxa_sums}} on which this function is based.
 #'  \code{\link{sample_prev}} for a similar output on samples.
 #'
+#' @import phyloseq
 #' @examples
 #' data(esophagus)
 #' taxa_prev(esophagus)
@@ -63,10 +69,11 @@ taxa_prev<-function(physeq){
 #' @seealso \code{\link{taxa_sums}} on which this function is based.
 #'  \code{\link{taxa_prev}} for taxa/OTU prevalence across samples.
 #'
+#' @import phyloseq
 #' @examples
 #' data(esophagus)
 #' sample_prev(esophagus)
-sample_prev<-function (physeq){
+sample_prev<-function(physeq){
   m <- otu_table(physeq)
   if (taxa_are_rows(m)) {
     colSums(m > 0)
@@ -89,6 +96,9 @@ sample_prev<-function (physeq){
 #' @export
 #'
 #' @seealso \code{\link{subset_samples}} on which it rely.
+#'
+#' @import phyloseq
+#'
 #' @examples
 #' data(GlobalPatterns)
 #' gp<-subset_samples(GlobalPatterns, SampleType=="Ocean")
@@ -102,21 +112,4 @@ subset_samples_no_zero<-function(physeq,...){
     taxa_sums(x)!=0 , # TRUE/FALSE OTU Vector to prune
     x )
   return(x)
-}
-
-#########################################################################
-#' Compute taxa/OTU relative abundance
-#'
-#' @param physeq \code{\link{otu_table-class}}, or \code{\link{phyloseq-class}}
-#'
-#' @return A \code{\link{numeric-class}} with length equal to the number of species
-#'  in the table, name indicated the taxa ID, and value equal to the taxa/OTU
-#'  relative abundance
-#' @export
-#'
-#' @examples
-relative_abundance<-function(physeq){
-  # return relative abundance of OTU in phyloseq object
-  abd<-taxa_sums(physeq)
-  return(abd/sum(abd))
 }

@@ -21,15 +21,17 @@
 #' @references See Fort et al. (2016) in \href{https://doi.org/10.7717/peerj.2656}{PeerJ}.
 #'
 #' @seealso \code{\link{floating.pie}} (in \code{\link{plotrix}} package)
+#'
+#' @importFrom plotrix floating.pie
+#'
 #' @return Nothing
 #' @export
 #'
 plot_pie_vector<-function(inner_abd,outer_abd, title , COL.TAXO = COL.TAXO, EDG = 200){
-  require(plotrix)
   pie(1, radius=1, init.angle=90, col=c('white'), border = NA, labels='', main=title)
-  floating.pie(0,0,outer_abd, radius=1, startpos=pi/2, col=COL.TAXO$CLASS,border=NA, edges=EDG)
-  floating.pie(0,0, 1,radius=0.52, col=c('white'), border = NA, edges=EDG)
-  floating.pie(0,0, inner_abd, radius=0.5, startpos=pi/2, col=COL.TAXO$DIV, border = NA, edges=EDG)
+  plotrix::floating.pie(0,0,outer_abd, radius=1, startpos=pi/2, col=COL.TAXO$CLASS,border=NA, edges=EDG)
+  plotrix::floating.pie(0,0, 1,radius=0.52, col=c('white'), border = NA, edges=EDG)
+  plotrix::floating.pie(0,0, inner_abd, radius=0.5, startpos=pi/2, col=COL.TAXO$DIV, border = NA, edges=EDG)
 }
 
 #' Pie Plot Taxonomy Assignations from Phyloseq
@@ -50,9 +52,9 @@ plot_pie_vector<-function(inner_abd,outer_abd, title , COL.TAXO = COL.TAXO, EDG 
 #' @author Charlie PAUVERT
 #' @references Adapted from Fort et al. (2016) in \href{https://doi.org/10.7717/peerj.2656}{PeerJ}.
 #' @seealso \code{\link{plot_pie_vector}}, \code{\link{psmelt}}
+#' @import phyloseq
 #' @export
 #'
-#' @examples
 plot_pie<-function(physeq, title.,condition,COL.TAXO. = COL.TAXO){
   # Extract sample data.frame and merge with taxonomy information
   # The resulting data.frame is decomposed to have a
