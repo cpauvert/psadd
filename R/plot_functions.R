@@ -73,6 +73,24 @@ plot_pie<-function(physeq, title.,condition,COL.TAXO. = COL.TAXO){
   return(list_taxa)
 }
 
+#' Plot Taxonomy Assignations from Phyloseq with legend.
+#'
+#' @inheritParams plot_pie
+#' @seealso \code{\link{plot_pie}}
+#'
+#' @import phyloseq
+#' @export
+plot_pie_with_legend <- function(physeq, title., condition) {
+  par(mfrow = c(1, 2))
+  list_taxa <- plot_pie(physeq, title., condition)
+  legend(x = "bottomleft", legend = list_taxa$inner, col = COL.TAXO$DIV,
+         bty = "n", pch = 15, ncol = 1, border = 0, pt.cex = 2, cex = 0.8,
+         title = "Phylum")
+  pie(1, radius = 1, init.angle = 90, col = c("white"), border = NA,
+      labels = "", main = "Taxonomic Assignations Legend")
+  legend(x = "top", legend = list_taxa$outer, col = COL.TAXO$CLASS, bty = "n",
+         pch = 15, ncol = 1, border = 0, pt.cex = 2, cex = 0.8, title = "Class")
+}
 #' Plot Mean Variance OTU in order to evaluate overdispersion
 #'
 #' The \code{\link{mean}} and variance (\code{\link{var}}) of \code{physeq} OTU table are computed.
@@ -160,4 +178,61 @@ plot_sparsity<-function(physeq, title = NULL){
     p <- p + ggtitle(title)
   }
   return(p)
+}
+
+#' Interactive Taxonomy plot with Krona from a phyloseq object
+#'
+#' Construct and run a Krona Chart to compare taxonomic assignations between
+#' the different conditions described in the \code{Description} variable (for now).
+#'
+#' @param physeq \code{\link{phyloseq-class}} with a \code{\link{taxonomyTable-class}}
+#' @param output A \code{\link{character}} stating the output filename for Krona Chart.
+#'
+#' @import phyloseq
+#' @export
+#'
+#' @references \href{https://github.com/marbl/Krona/wiki/KronaTools}{KronaTools}.
+plot_krona<-function(physeq,output){
+  # Check if KronaTools are installed.
+  if( system(command = "which ktImportText",
+              intern = FALSE,
+              ignore.stdout = TRUE)) {
+  stop("KronaTools are not installed. Please see https://github.com/marbl/Krona/wiki/KronaTools.")
+  }
+  if( is.null(tax_table(physeq)) ){
+    stop("No taxonomy table available.")
+  }
+  # Melt the OTU table and merge associated metadata
+  df<-psmelt(physeq)
+  # Fetch only Abundance, Description and taxonomic rank names columns
+  df<-df[ ,c("Abundance", "Description", rank_names(physeq)) ]
+  # Convert Description as factor.
+  df$Description<-as.factor(df$Description)
+
+  # For each level of the Description variable
+  # Abundance and taxonomic assignations for each OTU are fetched
+  # and written to a file that would be processed by Krona.
+  for( lvl in levels(df$Description)){
+    write.table(
+      unique(
+        subset(df, Description==lvl, select=-Description)
+        ),
+      file = paste(lvl, "taxonomy.txt",sep = ""),
+      sep = "\t",row.names = F,col.names = F,na = "",quote = F)
+  }
+  # Arguments for Krona command
+  # taxonomic file and their associated labels.
+  krona_args<-paste(levels(df$Description),
+                    "taxonomy.txt,",
+                    levels(df$Description),
+                    sep = "", collapse = " ")
+  # Add html suffix to output
+  output<-paste(output,".html",sep = "")
+  # Execute Krona command
+  system(paste("ktImportText",
+               krona_args,
+               "-o", output,
+               sep = " "))
+  # Run the browser to visualise the output.
+  browseURL(output)
 }
