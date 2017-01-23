@@ -10,6 +10,7 @@ Description: This package contains customs functions and additions to the
 License: AGPL-3
 LazyData: TRUE
 Imports:
+    ggplot2 (>= 2.1.0),
     phyloseq (>= 1.18.0),
     plotrix (>= 3.6-3),
     vegan (>= 2.3.5)
