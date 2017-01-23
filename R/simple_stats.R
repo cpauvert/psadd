@@ -15,6 +15,7 @@
 #'
 #' @export
 #' @examples
+#' require(phyloseq)
 #' data(esophagus)
 #' taxa_stats(esophagus, mean)[1:6]
 #' taxa_stats(esophagus, var)[1:6]
@@ -112,4 +113,110 @@ subset_samples_no_zero<-function(physeq,...){
     taxa_sums(x)!=0 , # TRUE/FALSE OTU Vector to prune
     x )
   return(x)
+}
+
+#########################################################################
+#' Compute taxa/OTU abundance relative to the total dataset
+#'
+#' Convenience function to divide \code{taxa_sums} output vector by the
+#' total number of sequences.
+#'
+#' @param physeq \code{\link{otu_table-class}}, or \code{\link{phyloseq-class}}
+#'
+#' @return A \code{\link{numeric-class}} with length equal to the number of species
+#'  in the table, name indicated the taxa ID, and value equal to the taxa/OTU
+#'  relative abundance
+#' @export
+#' @import phyloseq
+#'
+#' @seealso \code{\link{taxa_sums}} on which this function is based.
+#' See \code{\link{ctrl_samples_stats}} for a usage example.
+
+relative_abundance<-function(physeq){
+  # return relative abundance of OTU in phyloseq object
+  abd<-taxa_sums(physeq)
+  return(abd/sum(abd))
+}
+
+#########################################################################
+#' Compute taxa/OTU abundance relative to the total dataset
+#'
+#' Convenience function to divide \code{taxa_sums} output vector by the
+#' total number of sequences.
+#' Samples present in the second \code{phyloseq} object --\code{specific}-- are discarded
+#'  from the first one --\code{physeq}.
+#' Taxa/OTU present in the second \code{phyloseq} object --\code{specific}-- and supposedly
+#' of interest are stored.
+#' The relative abundances of these taxa/OTU of interest are then computed.
+#'
+#' @param physeq \code{\link{otu_table-class}}, or \code{\link{phyloseq-class}}
+#' @param specific \code{\link{otu_table-class}}, or \code{\link{phyloseq-class}}
+#'  containing samples of interest to examine (e.g. Negative or Positive Controls).
+
+#'
+#' @return A \code{\link{numeric-class}} with length equal to the number of species
+#'  present in the second --\code{specific}-- \code{phyloseq} object.
+#'   Names indicate the taxa ID, and value equal to the taxa/OTU
+#'  relative abundance in the first --\code{physeq}-- object (pruned of specific samples).
+#' @export
+#' @import phyloseq
+#'
+#' @seealso \code{\link{taxa_sums}} on which this function is based.
+#' See \code{\link{ctrl_samples_stats}} for a usage example.
+relative_abd_without_specific_sample<-function(physeq,specific){
+  # Discard sample of interest from the global otu table
+  m<-prune_samples(! sample_names(physeq) %in% sample_names(specific),physeq)
+  # Keep only OTU in the specific phyloseq object
+  otu_to_keep<-taxa_names(specific)
+  # Compute Relative Abundance of these OTUs in the first dataset (pruned of specific samples)
+  rel_abd<-relative_abundance(m)
+  return(rel_abd[ otu_to_keep ])
+}
+
+#####################################################################################
+
+#' Generate taxa/OTU statistics to compare control samples with the remaining dataset
+#'
+#'
+#' @inheritParams taxa_stats
+#' @param physeq_ctrl \code{\link{otu_table-class}}, or \code{\link{phyloseq-class}}
+#'  of control sample. It can be the output of \code{\link{subset_samples_no_zero}}
+#'   for example.
+#'
+#' @details
+#' The taxa/OTU prevalence is defined as the number of samples in which it occurs.
+#' The prevalence is corrected by substracting the number of samples in the \code{physeq_ctrl}
+#' object (usually 1).
+#'
+#' @return A \code{\link{data.frame}} with the following components
+#' \describe{
+#' \item{\code{RA_In_Ctrl}}{Taxa/OTU relative abundance in Control sample}
+#' \item{\code{RA_In_All}}{Same Taxa/OTU relative abundance in all samples \strong{but} Control samples}
+#' \item{\code{Ratio}}{Ratio of \code{RA_In_Ctrl}/\code{RA_In_All}}
+#' \item{\code{Prevalence}}{Taxa/OTU Prevalence in all samples \strong{but} Control samples.
+#'  Range from 0 to the number of samples in \code{physeq} object
+#'   (obtained by \code{\link[phyloseq]{ntaxa}})}
+#' }
+#'
+#' @export
+#' @import phyloseq
+#' @examples
+#' data(soilrep)
+#' # Subset a sample
+#' soilrep.6CC<-subset_samples_no_zero(soilrep, Sample=="6CC")
+#' # Check
+#' ctrl_df<-ctrl_samples_stats(soilrep,soilrep.6CC)
+#' head(ctrl_df)
+ctrl_samples_stats<-function(physeq,physeq_ctrl){
+  # RA stands for relative abundance
+  RA_ctrl_otu<-relative_abundance(physeq_ctrl)
+  RA_without_ctrl_sample<-relative_abd_without_specific_sample(physeq, physeq_ctrl)
+  # Prevalence of control OTU in the global dataset, corrected by the number of control sample (1 usually)
+  otu_prevalence<-taxa_prev(physeq)[taxa_names(physeq_ctrl)] - nsamples(physeq_ctrl)
+  df<-data.frame(
+    RA_In_Ctrl=RA_ctrl_otu,
+    RA_In_All=RA_without_ctrl_sample,
+    Ratio=RA_ctrl_otu/RA_without_ctrl_sample,
+    Prevalence=otu_prevalence)
+  return(df)
 }

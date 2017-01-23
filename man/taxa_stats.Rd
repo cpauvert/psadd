@@ -20,6 +20,7 @@ A \code{\link{numeric-class}} with length equal to the number of species
 It generalize the \code{\link{taxa_sums}} function and enable the use of several summary functions.
 }
 \examples{
+require(phyloseq)
 data(esophagus)
 taxa_stats(esophagus, mean)[1:6]
 taxa_stats(esophagus, var)[1:6]
