@@ -5,13 +5,20 @@ Instead of sharing functions scripts, I bundled functions and their documentatio
 
 # Installation
 
-The `psadd` installation requires [devtools](http://cran.r-project.org/web/packages/devtools/index.html). 
-Paste the following lines to both check for `devtools` and install `psadd`.
+The `psadd` installation requires the following depencies:
+```
+* ggplot2 (>= 2.1.0),
+* phyloseq (>= 1.18.0),
+* plotrix (>= 3.6-3),
+* vegan (>= 2.3.5)
+```
+
+
+Paste the following lines to install `psadd` from `bioconductor`.
 
 ```r
-if( !  require(devtools) ){ install.packages("devtools") }
-library(devtools)
-install_github("cpauvert/psadd")
+source("https://bioconductor.org/biocLite.R")
+biocLite("cpauvert/psadd")
 ```
 
 
