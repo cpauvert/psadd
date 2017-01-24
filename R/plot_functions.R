@@ -23,6 +23,7 @@
 #' @seealso \code{\link{floating.pie}} (in \code{\link{plotrix}} package)
 #'
 #' @importFrom plotrix floating.pie
+#' @importFrom graphics par pie
 #'
 #' @return Nothing
 #' @export
@@ -53,6 +54,7 @@ plot_pie_vector<-function(inner_abd,outer_abd, title , COL.TAXO = COL.TAXO, EDG 
 #' @references Adapted from Fort et al. (2016) in \href{https://doi.org/10.7717/peerj.2656}{PeerJ}.
 #' @seealso \code{\link{plot_pie_vector}}, \code{\link{psmelt}}
 #' @import phyloseq
+#' @importFrom stats aggregate
 #' @export
 #'
 plot_pie<-function(physeq, title.,condition,COL.TAXO. = COL.TAXO){
@@ -79,6 +81,7 @@ plot_pie<-function(physeq, title.,condition,COL.TAXO. = COL.TAXO){
 #' @seealso \code{\link{plot_pie}}
 #'
 #' @import phyloseq
+#' @importFrom graphics legend
 #' @export
 plot_pie_with_legend <- function(physeq, title., condition) {
   par(mfrow = c(1, 2))
@@ -111,6 +114,7 @@ plot_pie_with_legend <- function(physeq, title., condition) {
 #' @export
 #' @import ggplot2
 #' @import phyloseq
+#' @importFrom stats var
 #' @examples
 #' require(phyloseq)
 #' data(GlobalPatterns)
@@ -191,6 +195,7 @@ plot_sparsity<-function(physeq, title = NULL){
 #' @param output A \code{\link{character}} stating the output filename for Krona Chart.
 #'
 #' @import phyloseq
+#' @importFrom utils browseURL write.table
 #' @export
 #'
 #' @references \href{https://github.com/marbl/Krona/wiki/KronaTools}{KronaTools}.

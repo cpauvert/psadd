@@ -20,6 +20,7 @@ A subsetted object with the same class as \code{physeq}
 Subset samples and prune taxa/OTU with zero abundance
 }
 \examples{
+require(phyloseq)
 data(GlobalPatterns)
 gp<-subset_samples(GlobalPatterns, SampleType=="Ocean")
 gp.nz<-subset_samples_no_zero(GlobalPatterns, SampleType=="Ocean")

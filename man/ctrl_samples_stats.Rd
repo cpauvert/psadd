@@ -33,6 +33,7 @@ The prevalence is corrected by substracting the number of samples in the \code{p
 object (usually 1).
 }
 \examples{
+require(phyloseq)
 data(soilrep)
 # Subset a sample
 soilrep.6CC<-subset_samples_no_zero(soilrep, Sample=="6CC")

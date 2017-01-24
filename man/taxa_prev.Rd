@@ -19,6 +19,7 @@ Return a named vector of taxa/OTU with the number of samples where
 their abundance was not null.
 }
 \examples{
+require(phyloseq)
 data(esophagus)
 taxa_prev(esophagus)
 }

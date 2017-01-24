@@ -41,7 +41,10 @@ taxa_stats<-function (physeq,...){
 #'  \code{\link{sample_prev}} for a similar output on samples.
 #'
 #' @import phyloseq
+#' @export
+#'
 #' @examples
+#' require(phyloseq)
 #' data(esophagus)
 #' taxa_prev(esophagus)
 taxa_prev<-function(physeq){
@@ -95,7 +98,9 @@ sample_stats<-function (physeq,...){
 #'  \code{\link{taxa_prev}} for taxa/OTU prevalence across samples.
 #'
 #' @import phyloseq
+#' @export
 #' @examples
+#' require(phyloseq)
 #' data(esophagus)
 #' sample_prev(esophagus)
 sample_prev<-function(physeq){
@@ -122,9 +127,10 @@ sample_prev<-function(physeq){
 #'
 #' @seealso \code{\link{subset_samples}} on which it rely.
 #'
-#' @import phyloseq
+#' @importFrom phyloseq subset_samples prune_taxa taxa_sums
 #'
 #' @examples
+#' require(phyloseq)
 #' data(GlobalPatterns)
 #' gp<-subset_samples(GlobalPatterns, SampleType=="Ocean")
 #' gp.nz<-subset_samples_no_zero(GlobalPatterns, SampleType=="Ocean")
@@ -155,7 +161,6 @@ subset_samples_no_zero<-function(physeq,...){
 #'
 #' @seealso \code{\link{taxa_sums}} on which this function is based.
 #' See \code{\link{ctrl_samples_stats}} for a usage example.
-
 relative_abundance<-function(physeq){
   # return relative abundance of OTU in phyloseq object
   abd<-taxa_sums(physeq)
@@ -225,6 +230,7 @@ relative_abd_without_specific_sample<-function(physeq,specific){
 #' @export
 #' @import phyloseq
 #' @examples
+#' require(phyloseq)
 #' data(soilrep)
 #' # Subset a sample
 #' soilrep.6CC<-subset_samples_no_zero(soilrep, Sample=="6CC")
