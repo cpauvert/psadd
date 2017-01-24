@@ -244,3 +244,39 @@ plot_krona<-function(physeq,output){
   # Run the browser to visualise the output.
   browseURL(output)
 }
+
+#' Violin distribution plot
+#'
+#' Violin plot to visualise sample sequence number distribution.
+#'
+#' @inheritParams plot_sparsity
+#' @param x A \code{\link{character}} describing the variable from
+#' the \code{\link[phyloseq]{sample_data}} object to plot against.
+#'
+#' @import ggplot2
+#' @import phyloseq
+#' @export
+#' @return A \code{\link[ggplot2]{ggplot}} object.
+#' @examples
+#' require(phyloseq)
+#' data("soilrep")
+#' head( sample_data(soilrep) )
+#' plot_violin(physeq = soilrep, x = "warmed")
+plot_violin<-function(physeq, x, title = NULL){
+  # Compute sample sums
+  smp_sums<-sample_sums(physeq)
+  # Extract sample data if any.
+  smp_df<-as( sample_data(physeq), "data.frame")
+  # Merge both information: sample data and sequence number
+  df<-merge(smp_df, data.frame(SequenceNumbers = smp_sums), by = "row.names")
+  # Violin Plot horizontal
+  p<-ggplot(df, aes_string(x,y="SequenceNumbers", fill=x))+
+    geom_violin()+
+    geom_jitter(alpha=0.5)+
+    coord_flip()+
+    theme_minimal()
+  if (!is.null(title)) {
+    p <- p + ggtitle(title)
+  }
+  return(p)
+}
