@@ -2,13 +2,13 @@
 #####################################################
 #' Apply statistics function to taxa abundance vector
 #'
-#' It generalize the \code{\link{taxa_sums}} function and enable the use of several summary functions.
+#' It generalize the \code{\link[phyloseq]{taxa_sums}} function and enable the use of several summary functions.
 #'
 #' @param physeq \code{\link{otu_table-class}}, or \code{\link{phyloseq-class}}
 #' @param ... The function to be applied to the OTU table
 #' @return A \code{\link{numeric-class}} with length equal to the number of species
 #'  in the table, name indicated the taxa ID, and value equal to the result of
-#'  the function applied through \code{...}.
+#'  the function applied through the passed expression (\code{...}).
 #' @seealso \code{\link{taxa_sums}} on which this function is based.
 #'
 #' @import phyloseq
@@ -53,7 +53,31 @@ taxa_prev<-function(physeq){
     colSums(m > 0)
   }
 }
-
+#####################################################
+#' Apply statistics function to samples.
+#'
+#' It generalize the \code{\link[phyloseq]{sample_sums}} function and enable the use of several summary functions.
+#'
+#' @param physeq \code{\link{otu_table-class}}, or \code{\link{phyloseq-class}}
+#' @param ... The function to be applied to the OTU table
+#' @return A \code{\link{numeric-class}} with length equal to the number of samples
+#'  in the table. Names indicate sample ID, and values equal to the result of
+#'  the function applied through the passed expression (\code{...}).
+#' @seealso \code{\link{sample_sums}} on which this function is based.
+#'
+#' @import phyloseq
+#'
+#' @export
+#' @examples
+#' require(phyloseq)
+#' data(esophagus)
+#' sample_stats(esophagus, mean)[1:6]
+#' sample_stats(esophagus, var)[1:6]
+sample_stats<-function (physeq,...){
+  m <- otu_table(physeq)
+  marg<-ifelse(taxa_are_rows(m), yes = 2, no = 1)
+  return(apply(m, marg, ...))
+}
 
 ########################################
 #' Taxa/OTU number in all samples
