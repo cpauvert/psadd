@@ -2,7 +2,7 @@
 % Please edit documentation in R/simple_stats.R
 \name{sample_stats}
 \alias{sample_stats}
-\title{Apply statistics function to taxa abundance vector}
+\title{Apply statistics function to samples.}
 \usage{
 sample_stats(physeq, ...)
 }
