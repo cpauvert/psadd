@@ -19,9 +19,11 @@ Taxa/OTU are ordered by their prevalence in the dataset, and samples are
 ordered by their richness (or completedness).
 }
 \examples{
+\dontrun{
 require(phyloseq)
-data(GlobalPatterns)
-(p<-plot_sparsity(GlobalPatterns, title = "Sparsity Plot"))
+data(enterotype)
+(entero.sparse<-plot_sparsity(enterotype, title = "Sparsity Plot")
+}
 }
 \references{
 Adapted from \href{https://doi.org/10.1186/s40168-016-0208-8}{Thorsen and Brejnrod et al. (2016)}.

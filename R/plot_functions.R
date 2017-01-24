@@ -151,9 +151,11 @@ plot_mv<-function(physeq,log=TRUE,title = NULL){
 #' @import phyloseq
 #' @import ggplot2
 #' @examples
+#' \dontrun{
 #' require(phyloseq)
-#' data(GlobalPatterns)
-#' (p<-plot_sparsity(GlobalPatterns, title = "Sparsity Plot"))
+#' data(enterotype)
+#' (entero.sparse<-plot_sparsity(enterotype, title = "Sparsity Plot")
+#' }
 plot_sparsity<-function(physeq, title = NULL){
   # Melt the OTU table and merge associated metadata
   df<-psmelt(physeq)[,1:3]# keep OTU, Sample, Abundance columns
