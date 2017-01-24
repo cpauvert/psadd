@@ -192,6 +192,14 @@ plot_sparsity<-function(physeq, title = NULL){
 #' @export
 #'
 #' @references \href{https://github.com/marbl/Krona/wiki/KronaTools}{KronaTools}.
+#' @examples
+#' \dontrun{
+#' require(phyloseq)
+#' data(GlobalPatterns)
+#' # Little hack before being able to generalize plot_krona
+#' sample_data(GlobalPatterns)$Description<-sample_data(GlobalPatterns)$SampleType
+#' plot_krona(GlobalPatterns,"GP-krona")
+#' }
 plot_krona<-function(physeq,output){
   # Check if KronaTools are installed.
   if( system(command = "which ktImportText",

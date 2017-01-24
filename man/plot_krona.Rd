@@ -15,6 +15,15 @@ plot_krona(physeq, output)
 Construct and run a Krona Chart to compare taxonomic assignations between
 the different conditions described in the \code{Description} variable (for now).
 }
+\examples{
+\dontrun{
+require(phyloseq)
+data(GlobalPatterns)
+# Little hack before being able to generalize plot_krona
+sample_data(GlobalPatterns)$Description<-sample_data(GlobalPatterns)$SampleType
+plot_krona(GlobalPatterns,"GP-krona")
+}
+}
 \references{
 \href{https://github.com/marbl/Krona/wiki/KronaTools}{KronaTools}.
 }
