@@ -27,3 +27,33 @@ rename_otu<-function(physeq){
   taxa_names(physeq)<-paste("OTU", match(hash_otus, rank_otus), sep = "_")
   return(physeq)
 }
+#' Convert taxa/ID through a correspondence table
+#' @param physeq \code{\link{phyloseq-class}}
+#' @param hashTable  A \code{\link{data.frame}} with at least a **UsearchID** and **HashID** columns.
+#' @param ... The subsetting expression that should be applied to the
+#'  correspondance table \code{hashTable}. This is passed on to \code{\link[base]{subset}}.
+#'
+#'
+#'
+#' @return physeq-renamed \code{\link{phyloseq-class}} with OTU renamed.
+#' @export
+#'
+#' @examples
+id2hash<-function(physeq, hashTable, ...){
+  # Select only rows on interest, assembly method or min overlap for ex.
+  # keep only ID columns
+  intermediate.df<-subset(hashTable, subset = ..., select = c("UsearchID", "HashID"))
+  # Drop unused levels
+  intermediate.df<-droplevels(intermediate.df)
+  # Replace rownames by USEARCH ID to speed up replacement.
+  rownames(intermediate.df)<-intermediate.df$UsearchID
+  # Discard unused column
+  intermediate.df$UsearchID<-NULL
+
+  # Fetch OTU ids
+  otu_id<-taxa_names(physeq)
+  # Replace USEARCH Id by Hash ID
+  taxa_names(physeq)<-as.vector(intermediate.df[ otu_id, ])
+  # Return modified phyloseq object
+  return(physeq)
+}
