@@ -8,8 +8,9 @@ rename_otu(physeq)
 }
 \arguments{
 \item{physeq}{\code{\link{phyloseq-class}}}
-
-\item{physeq-renamed}{\code{\link{phyloseq-class}} with OTU renamed.}
+}
+\value{
+physeq \code{\link{phyloseq-class}} with OTU renamed.
 }
 \description{
 OTU names when generated with vsearch for example corresponds

@@ -11,7 +11,7 @@
 #' \code{\link[phyloseq]{phyloseq}} object.
 #'
 #' @param physeq \code{\link{phyloseq-class}}
-#' @param physeq-renamed \code{\link{phyloseq-class}} with OTU renamed.
+#' @return physeq \code{\link{phyloseq-class}} with OTU renamed.
 #'
 #' @importFrom phyloseq taxa_sums taxa_names
 #' @export
