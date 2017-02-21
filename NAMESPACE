@@ -2,6 +2,7 @@
 
 export(ctrl_samples_stats)
 export(id2hash)
+export(multiple_rrarefy)
 export(plot_krona)
 export(plot_mv)
 export(plot_pie)
