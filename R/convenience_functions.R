@@ -11,12 +11,19 @@
 #' \code{\link[phyloseq]{phyloseq}} object.
 #'
 #' @param physeq \code{\link{phyloseq-class}}
+#' @param hash2id_file A character giving the filename to write the
+#' correspondence table between the hash and the new ID or "" for output to
+#' the console.
 #' @return physeq \code{\link{phyloseq-class}} with OTU renamed.
 #'
 #' @importFrom phyloseq taxa_sums taxa_names
 #' @export
-#'
-rename_otu<-function(physeq){
+#' @examples
+#' require(phyloseq)
+#' data(esophagus)
+#' taxa_names(esophagus)[1:6]
+#' taxa_names( rename_otu( esophagus, hash2id_file = "" ) )[1:6]
+rename_otu<-function(physeq, hash2id_file){
   # OTU Abundance vector
   otu_abd<-taxa_sums(physeq)
   # Get OTU rank after sorting by decreasing abundance
@@ -25,6 +32,11 @@ rename_otu<-function(physeq){
   hash_otus<-taxa_names(physeq)
   # Associate hash to rank abundance prefix
   taxa_names(physeq)<-paste("OTU", match(hash_otus, rank_otus), sep = "_")
+  # Create correspondence table for tracability
+  correspondence<-data.frame(HashID = hash_otus,
+                             RankID = taxa_names(physeq))
+  # Write correspondence table to file
+  write.csv(x = correspondence,file = hash2id_file,row.names = FALSE)
   return(physeq)
 }
 #' Convert taxa/ID through a correspondence table

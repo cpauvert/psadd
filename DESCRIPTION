@@ -1,7 +1,7 @@
 Package: psadd
 Type: Package
 Title: Additions to phyloseq package for microbiome analysis
-Version: 0.1.0
+Version: 0.1.1
 Author: Charlie PAUVERT <charlie.pauvert@u-bordeaux.fr>
 Maintainer: Charlie PAUVERT <charlie.pauvert@u-bordeaux.fr>
 Description: This package contains customs functions and additions to the
@@ -14,4 +14,4 @@ Imports:
     phyloseq (>= 1.18.0),
     plotrix (>= 3.6-3),
     vegan (>= 2.3.5)
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

@@ -4,10 +4,14 @@
 \alias{rename_otu}
 \title{OTU renaming: from hash to rank abundance prefix}
 \usage{
-rename_otu(physeq)
+rename_otu(physeq, hash2id_file)
 }
 \arguments{
 \item{physeq}{\code{\link{phyloseq-class}}}
+
+\item{hash2id_file}{A character giving the filename to write the
+correspondence table between the hash and the new ID or "" for output to
+the console.}
 }
 \value{
 physeq \code{\link{phyloseq-class}} with OTU renamed.
@@ -24,4 +28,9 @@ This renaming also has the advantage to ease subsetting with OTU names
 because OTU names are the \code{\link[base]{row.names}} of several
 \code{\link[phyloseq]{phyloseq}} object.
 }
-
+\examples{
+require(phyloseq)
+data(esophagus)
+taxa_names(esophagus)[1:6]
+taxa_names( rename_otu( esophagus, hash2id_file = "" ) )[1:6]
+}
