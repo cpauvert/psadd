@@ -69,3 +69,38 @@ id2hash<-function(physeq, hashTable, ...){
   # Return modified phyloseq object
   return(physeq)
 }
+#' Taxa/OTU abundance in a given sample coupled with rank and taxonomic information
+#'
+#' @param physeq \code{\link{phyloseq-class}}
+#' @param smp A single sample of interest. This integer or sample name will be
+#' passed to \code{\link[phyloseq]{get_taxa}}.
+#' @param level A character indicating the taxonomic rank of interest. Should be in
+#' \code{\link[phyloseq]{rank_names}}. Default is "Species".
+#'
+#' @return An abundance sorted \code{\link{data.frame}} with the following components
+#' \describe{
+#' \item{\code{Sample}}{Sample of interest}
+#' \item{\code{Abundance}}{Taxa/OTU abundance in the sample of interest}
+#' \item{\code{Rank}}{Taxa/OTU rank in the dataset. The higher the rank, the less abundant the OTU.}
+#' \item{\code{level}}{Taxonomic rank of interest. Note that the column is named after
+#' the provided value from \code{level}.}
+#' }
+#' @export
+#' @seealso \code{\link[phyloseq]{get_taxa}}
+#' @examples
+get_taxa_nomy<-function(physeq, smp, level="Species"){
+  # Fetch OTU/taxa in samples
+  taxa_list<-get_taxa(physeq, smp)
+  # Subset list to taxa detected
+  taxa_list<-taxa_list[ taxa_list > 0 ]
+  df<-data.frame(
+    Sample = smp,
+    Abundance = taxa_list,
+    Rank = match( names(taxa_list), names(sort(taxa_sums(physeq),decreasing = T))),
+    TaxLevel = as(tax_table(physeq)[names(taxa_list),level],"matrix"))
+  # Order by decreasing abundance
+  df<-df[order(-df$Abundance),]
+  # Include taxonomic level
+  colnames(df)<-c('Sample','Abundance','Rank',level)
+  return(df)
+}
