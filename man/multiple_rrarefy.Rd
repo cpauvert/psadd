@@ -22,7 +22,7 @@ on the output.}
 }
 \value{
 An object of class \code{\link[phyloseq]{phyloseq}}.
- Only the \code{\link[phyloseq]{phyloseq}} component is modified.
+ Only the \code{\link[phyloseq]{otu_table-class}} component is modified.
 }
 \description{
 Performs rarefying multiple times and returns averaged OTU table
@@ -30,4 +30,3 @@ Performs rarefying multiple times and returns averaged OTU table
 \seealso{
 \code{\link[phyloseq]{rarefy_even_depth}}
 }
-

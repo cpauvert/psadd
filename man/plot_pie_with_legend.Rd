@@ -19,4 +19,3 @@ Plot Taxonomy Assignations from Phyloseq with legend.
 \seealso{
 \code{\link{plot_pie}}
 }
-

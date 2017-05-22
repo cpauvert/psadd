@@ -27,4 +27,3 @@ taxa_prev(esophagus)
 \code{\link{taxa_sums}} on which this function is based.
  \code{\link{sample_prev}} for a similar output on samples.
 }
-

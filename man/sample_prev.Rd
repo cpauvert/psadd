@@ -27,4 +27,3 @@ sample_prev(esophagus)
 \code{\link{taxa_sums}} on which this function is based.
  \code{\link{taxa_prev}} for taxa/OTU prevalence across samples.
 }
-

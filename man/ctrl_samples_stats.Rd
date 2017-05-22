@@ -41,4 +41,3 @@ soilrep.6CC<-subset_samples_no_zero(soilrep, Sample=="6CC")
 ctrl_df<-ctrl_samples_stats(soilrep,soilrep.6CC)
 head(ctrl_df)
 }
-

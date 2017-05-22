@@ -20,4 +20,3 @@ physeq-renamed \code{\link{phyloseq-class}} with OTU renamed.
 \description{
 Convert taxa/ID through a correspondence table
 }
-

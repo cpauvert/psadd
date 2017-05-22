@@ -31,4 +31,3 @@ Adapted from \href{https://doi.org/10.1186/s40168-016-0208-8}{Thorsen and Brejnr
 \seealso{
 \code{\link{plot_mv}},\code{\link{taxa_prev}}, \code{\link{sample_prev}}
 }
-

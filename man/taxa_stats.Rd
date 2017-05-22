@@ -28,4 +28,3 @@ taxa_stats(esophagus, var)[1:6]
 \seealso{
 \code{\link{taxa_sums}} on which this function is based.
 }
-

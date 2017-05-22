@@ -30,4 +30,3 @@ ntaxa(gp.nz) # 5669 OTU
 \seealso{
 \code{\link{subset_samples}} on which it rely.
 }
-

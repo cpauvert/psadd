@@ -31,4 +31,3 @@ The relative abundances of these taxa/OTU of interest are then computed.
 \code{\link{taxa_sums}} on which this function is based.
 See \code{\link{ctrl_samples_stats}} for a usage example.
 }
-

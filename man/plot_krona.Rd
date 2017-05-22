@@ -27,4 +27,3 @@ plot_krona(GlobalPatterns,"GP-krona")
 \references{
 \href{https://github.com/marbl/Krona/wiki/KronaTools}{KronaTools}.
 }
-

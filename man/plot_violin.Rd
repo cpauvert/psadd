@@ -26,4 +26,3 @@ data("soilrep")
 head( sample_data(soilrep) )
 plot_violin(physeq = soilrep, x = "warmed")
 }
-

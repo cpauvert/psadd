@@ -31,13 +31,12 @@ levels at the same time
 \code{COL.TAXO} should contain at least two named elements \code{DIV} and \code{CLASS}.
 These vectors describe the inner and outer pie chart color, respectively.
 }
-\author{
-Thomas Fort
-}
 \references{
 See Fort et al. (2016) in \href{https://doi.org/10.7717/peerj.2656}{PeerJ}.
 }
 \seealso{
 \code{\link{floating.pie}} (in \code{\link{plotrix}} package)
 }
-
+\author{
+Thomas Fort
+}

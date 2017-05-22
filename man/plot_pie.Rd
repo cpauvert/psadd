@@ -26,13 +26,12 @@ and (ii) outer (e.g. \href{https://en.wikipedia.org/wiki/Class_(biology)}{Class}
 It was primarily developed to illustrate taxonomic assignations at both
 levels at the same time.
 }
-\author{
-Charlie PAUVERT
-}
 \references{
 Adapted from Fort et al. (2016) in \href{https://doi.org/10.7717/peerj.2656}{PeerJ}.
 }
 \seealso{
 \code{\link{plot_pie_vector}}, \code{\link{psmelt}}
 }
-
+\author{
+Charlie PAUVERT
+}

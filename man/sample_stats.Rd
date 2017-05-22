@@ -28,4 +28,3 @@ sample_stats(esophagus, var)[1:6]
 \seealso{
 \code{\link{sample_sums}} on which this function is based.
 }
-
