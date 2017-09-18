@@ -189,10 +189,12 @@ plot_sparsity<-function(physeq, title = NULL){
 #' Interactive Taxonomy plot with Krona from a phyloseq object
 #'
 #' Construct and run a Krona Chart to compare taxonomic assignations between
-#' the different conditions described in the \code{Description} variable (for now).
+#' different conditions.
 #'
 #' @param physeq \code{\link{phyloseq-class}} with a \code{\link{taxonomyTable-class}}
-#' @param output A \code{\link{character}} stating the output filename for Krona Chart.
+#' @param output A \code{\link{character}} stating the output filename for Krona Chart and the directory in which Krona files will be created.
+#' @param variable A \code{\link{character}} indicating which variable from sample data to use.
+#' @param trim Should spaces and brackets be converted to underscore automatically.
 #'
 #' @import phyloseq
 #' @importFrom utils browseURL write.table
@@ -203,11 +205,10 @@ plot_sparsity<-function(physeq, title = NULL){
 #' \dontrun{
 #' require(phyloseq)
 #' data(GlobalPatterns)
-#' # Little hack before being able to generalize plot_krona
-#' sample_data(GlobalPatterns)$Description<-sample_data(GlobalPatterns)$SampleType
-#' plot_krona(GlobalPatterns,"GP-krona")
+#' plot_krona(GlobalPatterns,"GP-krona", "SampleType")# issues with brackets
+#' plot_krona(GlobalPatterns,"GP-krona", "SampleType",trim=T)
 #' }
-plot_krona<-function(physeq,output){
+plot_krona<-function(physeq,output,variable, trim=F){
   # Check if KronaTools are installed.
   if( system(command = "which ktImportText",
               intern = FALSE,
@@ -217,29 +218,45 @@ plot_krona<-function(physeq,output){
   if( is.null(tax_table(physeq)) ){
     stop("No taxonomy table available.")
   }
+  if( ! variable %in% colnames(sample_data(physeq))){
+    stop(paste(variable, "is not a variable in the sample data."))
+  }
+  if (trim == FALSE) {
+    spec.char<- grepl(" |\\(|\\)", as(sample_data(physeq),"data.frame")[,variable] )
+    if(sum(spec.char > 0 )){
+      message("The following lines contains spaces or brackets.")
+      print(paste(which(spec.char)))
+      stop("Use trim=TRUE to convert them automatically or convert manually before re-run")
+    }
+  }
   # Melt the OTU table and merge associated metadata
   df<-psmelt(physeq)
   # Fetch only Abundance, Description and taxonomic rank names columns
-  df<-df[ ,c("Abundance", "Description", rank_names(physeq)) ]
-  # Convert Description as factor.
-  df$Description<-as.factor(df$Description)
+  df<-df[ ,c("Abundance", variable, rank_names(physeq)) ]
+  # Make sure there are no spaces left
+  df[,2]<-gsub(" |\\(|\\)","",df[,2])
+  # Convert the field of interest as factor.
+  df[,2]<-as.factor(df[,2])
+
+  # Create a directory for krona files
+  dir.create(output)
 
   # For each level of the Description variable
   # Abundance and taxonomic assignations for each OTU are fetched
   # and written to a file that would be processed by Krona.
-  for( lvl in levels(df$Description)){
+  for( lvl in levels(df[,2])){
     write.table(
       unique(
-        subset(df, Description==lvl, select=-Description)
+        df[ which( df[,2] == lvl), -2]
         ),
-      file = paste(lvl, "taxonomy.txt",sep = ""),
+      file = paste0(output,"/",lvl, "taxonomy.txt"),
       sep = "\t",row.names = F,col.names = F,na = "",quote = F)
   }
   # Arguments for Krona command
   # taxonomic file and their associated labels.
-  krona_args<-paste(levels(df$Description),
+  krona_args<-paste(output,"/",levels(df[,2]),
                     "taxonomy.txt,",
-                    levels(df$Description),
+                    levels(df[,2]),
                     sep = "", collapse = " ")
   # Add html suffix to output
   output<-paste(output,".html",sep = "")

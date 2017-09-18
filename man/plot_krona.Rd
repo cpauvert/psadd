@@ -4,24 +4,27 @@
 \alias{plot_krona}
 \title{Interactive Taxonomy plot with Krona from a phyloseq object}
 \usage{
-plot_krona(physeq, output)
+plot_krona(physeq, output, variable, trim = F)
 }
 \arguments{
 \item{physeq}{\code{\link{phyloseq-class}} with a \code{\link{taxonomyTable-class}}}
 
-\item{output}{A \code{\link{character}} stating the output filename for Krona Chart.}
+\item{output}{A \code{\link{character}} stating the output filename for Krona Chart and the directory in which Krona files will be created.}
+
+\item{variable}{A \code{\link{character}} indicating which variable from sample data to use.}
+
+\item{trim}{Should spaces and brackets be converted to underscore automatically.}
 }
 \description{
 Construct and run a Krona Chart to compare taxonomic assignations between
-the different conditions described in the \code{Description} variable (for now).
+different conditions.
 }
 \examples{
 \dontrun{
 require(phyloseq)
 data(GlobalPatterns)
-# Little hack before being able to generalize plot_krona
-sample_data(GlobalPatterns)$Description<-sample_data(GlobalPatterns)$SampleType
-plot_krona(GlobalPatterns,"GP-krona")
+plot_krona(GlobalPatterns,"GP-krona", "SampleType")# issues with brackets
+plot_krona(GlobalPatterns,"GP-krona", "SampleType",trim=T)
 }
 }
 \references{
