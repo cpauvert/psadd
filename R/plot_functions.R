@@ -11,16 +11,16 @@
 #' @param inner_abd A \code{\link{numeric-class}} describing the inner pie chart
 #' @param outer_abd A \code{\link{numeric-class}} describing the outer pie chart
 #' @param title A \code{\link{character}} specifying the plot title
-#' @param COL.TAXO A palette (\code{\link{list}}) containing (at least) two named elements
-#' @param EDG Number of edges
+#' @param colors A palette (\code{\link{list}}) containing two named elements "inner" and "outer"
+#' @param ... Options passed to \code{link[plotrix]{floating.pie}}.
 #'
-#' @details \code{COL.TAXO} should contain at least two named elements \code{DIV} and \code{CLASS}.
-#' These vectors describe the inner and outer pie chart color, respectively.
+#' @details \code{colors} should match the length of  at least two named elements.
+#' Part of the chart would be colored These vectors describe the inner and outer pie chart color, respectively.
 #'
 #' @author Thomas Fort
 #' @references See Fort et al. (2016) in \href{https://doi.org/10.7717/peerj.2656}{PeerJ}.
 #'
-#' @seealso \code{\link{floating.pie}} (in \code{\link{plotrix}} package)
+#' @seealso \code{\link[plotrix]{floating.pie}}
 #'
 #' @importFrom plotrix floating.pie
 #' @importFrom graphics par pie
@@ -28,11 +28,15 @@
 #' @return Nothing
 #' @export
 #'
-plot_pie_vector<-function(inner_abd,outer_abd, title , COL.TAXO = COL.TAXO, EDG = 200){
+plot_pie_vector<-function(inner_abd,outer_abd, title, colors, ... ){
+  if( sum( names(colors) %in% c("inner", "outer")) < 2 ){
+    stop("colors vector should contains two vectors named 'inner' and 'outer'")
+  }
+  stopifnot(length(inner_abd) == length(colors$inner), length(outer_abd) == length(colors$outer))
   pie(1, radius=1, init.angle=90, col=c('white'), border = NA, labels='', main=title)
-  plotrix::floating.pie(0,0,outer_abd, radius=1, startpos=pi/2, col=COL.TAXO$CLASS,border=NA, edges=EDG)
-  plotrix::floating.pie(0,0, 1,radius=0.52, col=c('white'), border = NA, edges=EDG)
-  plotrix::floating.pie(0,0, inner_abd, radius=0.5, startpos=pi/2, col=COL.TAXO$DIV, border = NA, edges=EDG)
+  plotrix::floating.pie(0,0,outer_abd, radius=1, startpos=pi/2, col=colors$outer,border=NA, ...)
+  plotrix::floating.pie(0,0, 1,radius=0.52, col=c('white'), border = NA, ...)
+  plotrix::floating.pie(0,0, inner_abd, radius=0.5, startpos=pi/2, col=colors$inner, border = NA, ...)
 }
 
 #' Pie Plot Taxonomy Assignations from Phyloseq
