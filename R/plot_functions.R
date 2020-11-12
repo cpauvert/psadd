@@ -245,10 +245,10 @@ plot_krona<-function(physeq,output,variable, trim=F){
   # Abundance and taxonomic assignations for each OTU are fetched
   # and written to a file that would be processed by Krona.
   for( lvl in levels(df[,2])){
-    write.table(
-      unique(
-        df[ which( df[,2] == lvl), -2]
-        ),
+      tt = df[which(df[, 2] == lvl), -2]
+      tt2 = tt[which(tt[,1]!=0),]
+
+    write.table(tt2,
       file = paste0(output,"/",lvl, "taxonomy.txt"),
       sep = "\t",row.names = F,col.names = F,na = "",quote = F)
   }
@@ -266,7 +266,7 @@ plot_krona<-function(physeq,output,variable, trim=F){
                "-o", output,
                sep = " "))
   # Run the browser to visualise the output.
-  browseURL(output)
+  # browseURL(output)
 }
 
 #' Violin distribution plot
