@@ -264,7 +264,7 @@ plot_krona<-function(physeq,output,variable, trim=F){
                "-o", output,
                sep = " "))
   # Run the browser to visualise the output.
-  # browseURL(output)
+  browseURL(output)
 }
 
 #' Violin distribution plot
