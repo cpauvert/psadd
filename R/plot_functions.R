@@ -246,9 +246,7 @@ plot_krona<-function(physeq,output,variable, trim=F){
   # and written to a file that would be processed by Krona.
   for( lvl in levels(df[,2])){
     write.table(
-      unique(
-        df[ which( df[,2] == lvl), -2]
-        ),
+      df[which(df[, 2] == lvl & df[,1] != 0), -2]
       file = paste0(output,"/",lvl, "taxonomy.txt"),
       sep = "\t",row.names = F,col.names = F,na = "",quote = F)
   }
