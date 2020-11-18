@@ -14,11 +14,10 @@ The `psadd` installation requires the following depencies:
 ```
 
 
-Paste the following lines to install `psadd` from `bioconductor`.
+Paste the following lines to install `psadd` from github.
 
 ```r
-source("https://bioconductor.org/biocLite.R")
-biocLite("cpauvert/psadd")
+remotes::install_github("cpauvert/psadd")
 ```
 
 
