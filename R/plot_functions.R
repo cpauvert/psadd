@@ -194,6 +194,7 @@ plot_sparsity<-function(physeq, title = NULL){
 #' @param physeq \code{\link{phyloseq-class}} with a \code{\link{taxonomyTable-class}}
 #' @param output A \code{\link{character}} stating the output filename for Krona Chart and the directory in which Krona files will be created.
 #' @param variable A \code{\link{character}} indicating which variable from sample data to use.
+#' @param krona_path A \code{\link{character}} indicating the path to the \code{ktImportText} program. It should end with \code{ktImportText}.
 #' @param trim Should spaces and brackets be converted to underscore automatically.
 #'
 #' @import phyloseq
@@ -208,12 +209,12 @@ plot_sparsity<-function(physeq, title = NULL){
 #' plot_krona(GlobalPatterns,"GP-krona", "SampleType")# issues with brackets
 #' plot_krona(GlobalPatterns,"GP-krona", "SampleType",trim=T)
 #' }
-plot_krona<-function(physeq,output,variable, trim=F){
+plot_krona<-function(physeq,output,variable,krona_path, trim=F){
   # Check if KronaTools are installed.
-  if( system(command = "which ktImportText",
+  if( system(command = krona_path,
               intern = FALSE,
               ignore.stdout = TRUE)) {
-  stop("KronaTools are not installed. Please see https://github.com/marbl/Krona/wiki/KronaTools.")
+  stop("KronaTools are not installed. Please see https://github.com/marbl/Krona/wiki/KronaTools. And provide a valid path to ktImportText")
   }
   if( is.null(tax_table(physeq)) ){
     stop("No taxonomy table available.")
@@ -259,7 +260,7 @@ plot_krona<-function(physeq,output,variable, trim=F){
   # Add html suffix to output
   output<-paste(output,".html",sep = "")
   # Execute Krona command
-  system(paste("ktImportText",
+  system(paste(krona_path,
                krona_args,
                "-o", output,
                sep = " "))
